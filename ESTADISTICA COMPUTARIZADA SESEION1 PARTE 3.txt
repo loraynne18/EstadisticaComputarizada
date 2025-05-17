@@ -1,0 +1,314 @@
+
+
+_________________________________________________
+
+# @title **Paso 1. librerias usadas**
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+____________________________________________________
+# @title **Paso2. Importamos los datos desde el archivo Datos1.csv y lo asignamos a la variable df**
+df = pd.read_csv("/content/DATOS202460ULTIMOS.csv", delimiter=';')
+df
+____________________________________________________
+# @title **Paso 3. Cantidad de estudiantes y variables**
+No_estudiantes_y_Variables = df.shape
+print('(No estudiantes, No Variables) = ',No_estudiantes_y_Variables)
+
+____________________________________________________
+
+# @title **Paso 4. Mostrar información del tipo de las  variables y registros nulos (null)**
+df.info()
+
+____________________________________________________
+# @title **Paso 5. Mostrar los diferentes tipos de cursos**
+Tipos_cursos = df['CURSO'].unique()
+print('Cursos=', Tipos_cursos)
+____________________________________________________
+# @title **Paso 6. Mostrar los diferentes tipos de programas**
+Tipos_programas = df['PROGRAMA'].unique()
+print('Programas=', Tipos_programas)
+____________________________________________________
+# @title **Paso 7. Mostrar los diferentes tipos de estratos**
+Tipos_estratos = df['ESTRATO'].unique()
+print('Estratos=', Tipos_estratos)
+
+____________________________________________________
+# @title **Pso 8. Cambia en la variable 'PARCIAL 1'  cambia la "," por "."**
+
+df['PARCIAL 1'] = df['PARCIAL 1'].str.replace(',', '.')
+df['PARCIAL 2'] = df['PARCIAL 2'].str.replace(',', '.')
+____________________________________________________
+
+# @title **Paso 9. Convierte la variable NRC en object**
+
+# Assuming 'df' is your DataFrame and 'NRC' is the column you want to convert
+df['NRC'] = df['NRC'].astype(object)
+df['PARCIAL 1'] = df['PARCIAL 1'].astype(float)
+df['PARCIAL 2'] = df['PARCIAL 2'].astype(float)
+____________________________________________________
+# @title **Paso 10. Mostrar información del tipo de las  variables y registros nulos (null)**
+df.info()
+
+____________________________________________________
+
+#  @title **Paso 11. Muestrame la posicion en estrato con "nan"**
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+nan_estrato_positions = df[df['ESTRATO'].isnull()].index.tolist()
+print("Posiciones de estudiantes con 'nan' en estrato:", nan_estrato_positions)
+____________________________________________________
+# @title **Paso 12. Mostrar los diferentes tipos de transporte**
+Tipos_transporte = df['TRANSPORTE'].unique()
+print('Transporte = ', Tipos_transporte)
+____________________________________________________
+# @title **Paso 13. Mostrar los diferentes tipos de grupos sanguíneos**
+Tipos_sangre = df['GR_SANGUINEO'].unique()
+print('Grupo Sanguíneo=', Tipos_sangre)
+
+____________________________________________________
+# @title **Paso 14. Verificar la cantidad de datos faltantes en cada columna**
+faltantes = df.isnull().sum()
+faltantes
+
+____________________________________________________
+# @title **Paso 15. Estadísticas descriptivas generales**
+stats_descriptivas = df.describe()
+# Mostrar estadísticas descriptivas
+stats_descriptivas
+____________________________________________________
+# @title **Paso 16. Estadísticas para variables categóricas**
+categ_stats = df[['CURSO', 'PROGRAMA', 'URBANO', 'TRANSPORTE', 'SEXO', 'ESTRATO', 'GR_SANGUINEO']].describe()
+
+# Mostrar estadísticas descriptivas
+categ_stats
+____________________________________________________
+# @title **Paso 17. Modalidades de variables categoricas**
+df['URBANO'].unique()
+____________________________________________________
+# @title **Paso 18. Renombrando una variable**
+df['DEFINITIVA'] = df['PARCIAL 1']
+df
+
+____________________________________________________
+# @title **Paso 19. Gráficas BoxPlot e Histograma**
+plt.figure(figsize=(8, 4))
+
+# Histograma definitivas
+plt.subplot(2, 3, 1)
+plt.hist(df['DEFINITIVA'], bins=10, color='skyblue')
+#plt.title('Distribución de las Definitivas')
+#plt.xlabel('Definitiva (0->5)')
+plt.ylabel('Frecuencia')
+
+# Histograma de edades
+plt.subplot(2, 3, 2)
+plt.hist(df['EDAD'], bins=10, color='lightgreen')
+#plt.title('Distribución de Edad')
+#plt.xlabel('Edad (Años)')
+plt.ylabel('Frecuencia')
+
+# Boxplot de las definitivas
+plt.subplot(2, 3, 4)
+sns.boxplot(data=df, x='DEFINITIVA', color='skyblue')
+#plt.title('Distribución de Notas Definitivas')
+plt.xlabel('Definitiva (0->5)')
+
+# Boxplot Edad
+plt.subplot(2, 3, 5)
+sns.boxplot(data=df, x='EDAD', color='lightgreen')
+plt.xlabel('Edad (Años)')
+#plt.title('Distribución de Notas Definitivas')
+
+# Histograma de la estatura
+plt.subplot(2, 3, 3)
+plt.hist(df['ESTATURA'], bins=10, color='purple')
+#plt.title('Distribución de Asistencia')
+plt.ylabel('Frecuencia')
+#plt.xlabel('Estatura (cm)')
+
+# Boxplot de estatura
+plt.subplot(2, 3, 6)
+sns.boxplot(data=df, x='ESTATURA', color='purple')
+#plt.title('Distribución de la Asistencia')
+plt.xlabel('Estatura (cm)')
+
+#ajustar espaciado entre subplot
+plt.tight_layout()
+plt.show()
+
+
+
+
+____________________________________________________
+# @title **Paso 20. Mi turno**
+**4. Descripción de la distribución de otras variables (Peso, Asistencia, Parcial 2 = DEFINITIVA2)**
+____________________________________________________
+
+# @title **Paso 21. Gráfico de boxplot para ver la distribución de las notas por curso**
+plt.figure(figsize=(5, 3))
+sns.boxplot(x='CURSO', y='DEFINITIVA', data=df)
+plt.title('Distribución de Notas por Curso')
+plt.xlabel('Curso')
+plt.ylabel('Nota Parcial 1')
+plt.grid(True)
+plt.show()
+____________________________________________________
+# @title **Paso 22. Gráfico de boxplot para ver la distribución de las notas por curso**
+plt.figure(figsize=(5, 3))
+sns.boxplot(x='CURSO', y='PARCIAL 2', data=df)
+plt.title('Distribución de Notas por Curso')
+plt.xlabel('Curso')
+plt.ylabel('Nota Parcial 2')
+plt.grid(True)
+plt.show()
+
+____________________________________________________
+# @title **Paso 23. Gráfico de dispersión para observar la relación entre peso y nota definitiva**
+plt.figure(figsize=(8, 6))
+plt.scatter(df['PESO'], df['ESTATURA'], color='blue')
+plt.title('Relación entre SEXO y Nota Definitiva')
+plt.xlabel('PESO ')
+plt.ylabel('ESTATURA')
+plt.grid(True)
+plt.show()
+
+# Calcular la correlación entre peso y nota definitiva
+correlacion_peso_nota = df['ESTATURA'].corr(df['PESO'])
+print(f'coef. de correlación de Pearson es r = {correlacion_peso_nota:.2f}')
+print(f'coef. de determinación R^2 = {(correlacion_peso_nota**2*100):.2f}%')
+
+____________________________________________________
+# @title **Paso 24. Agregame la recta estimada de regresión y su ecuacion el titulo y el R2 en %**
+
+plt.figure(figsize=(8, 6))
+sns.regplot(x='PESO', y='ESTATURA', data=df)  # Use sns.regplot for regression line
+plt.title('Relación entre Peso y Estatura')
+plt.xlabel('Peso (kg)')
+plt.ylabel('Estatura (cm)')
+plt.grid(True)
+
+# Calcular la correlación entre peso y nota definitiva
+correlacion_peso_nota = df['ESTATURA'].corr(df['PESO'])
+
+# Obtener la ecuación de la recta de regresión
+slope, intercept = np.polyfit(df['PESO'], df['ESTATURA'], 1)
+equation = f'y = {slope:.2f}x + {intercept:.2f}'
+
+# Agregar la ecuación de la recta de regresión al gráfico
+plt.text(df['PESO'].min(), df['ESTATURA'].max() * 0.9, equation, fontsize=12)
+
+# Calcular R^2 en porcentaje
+r_squared = correlacion_peso_nota ** 2 * 100
+
+# Agregar R^2 al gráfico
+plt.text(df['PESO'].min(), df['ESTATURA'].max() * 0.85, f'R² = {r_squared:.2f}%', fontsize=12)
+
+
+plt.show()
+
+____________________________________________________
+# @title **Paso 25. Agregame la recta estimada de regresión y su ecuacion el titulo y el R2 en %**
+
+
+# Gráfico de dispersión para observar la relación entre peso y nota definitiva
+plt.figure(figsize=(8, 6))
+sns.regplot(x='ASISTENCIA1', y='DEFINITIVA', data=df)  # Use sns.regplot for regression line
+plt.title('Relación entre ASISTENCIA1 y DEFINITIVA')
+plt.xlabel('ASISTENCIA1 (kg)')
+plt.ylabel('DEFINITIVA (cm)')
+plt.grid(True)
+
+# Calcular la correlación entre ASISTENCIA1 y nota definitiva
+correlacion_ASISTENCIA1_nota = df['DEFINITIVA'].corr(df['ASISTENCIA1'])
+
+# Obtener la ecuación de la recta de regresión
+slope, intercept = np.polyfit(df['ASISTENCIA1'], df['DEFINITIVA'], 1)
+equation = f'y = {slope:.2f}x + {intercept:.2f}'
+
+# Agregar la ecuación de la recta de regresión al gráfico
+plt.text(df['ASISTENCIA1'].min(), df['DEFINITIVA'].max() * 0.9, equation, fontsize=12)
+
+# Calcular R^2 en porcentaje
+r_squared = correlacion_ASISTENCIA1_nota ** 2 * 100
+
+# Agregar R^2 al gráfico
+plt.text(df['ASISTENCIA1'].min(), df['DEFINITIVA'].max() * 0.85, f'R² = {r_squared:.2f}%', fontsize=12)
+
+
+plt.show()
+__________________________________________
+# @title **Paso 26. Columnas de la base**
+df.columns
+____________________________________________________
+
+# @title **Paso 27. Gráfico de boxplot para ver la relación entre estrato y las notas definitivas**
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='ESTRATO', y='DEFINITIVA', data=df)
+plt.title('Relación entre Estrato y Nota Definitiva')
+plt.xlabel('Estrato')
+plt.ylabel('Nota Definitiva')
+plt.grid(True)
+plt.show()
+
+# Calcular la media de las notas por estrato
+media_nota_estrato = df.groupby('ESTRATO')['DEFINITIVA'].mean()
+media_nota_estrato
+
+____________________________________________________
+
+# @title **Paso 28. Gráfico de boxplot para ver la distribución de las notas por estrato**
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='ESTRATO', y='DEFINITIVA', data=df)
+plt.title('Distribución de Notas por Estrato')
+plt.xlabel('Estrato')
+plt.ylabel('Nota Definitiva')
+plt.grid(True)
+plt.show()
+
+____________________________________________________
+
+# @title **Paso 29. Calcular la desviación estándar de las notas por programa para medir la dispersión**
+dispersion_nota_programa = df.groupby('PROGRAMA')['DEFINITIVA'].std()
+
+# Identificar el programa con menor dispersión
+programa_menor_dispersión = dispersion_nota_programa.idxmin()
+menor_dispersión_valor = dispersion_nota_programa.min()
+
+programa_menor_dispersión, menor_dispersión_valor
+
+
+____________________________________________________
+
+# @title **Paso 30.  Gráfico de boxplot para ver la distribución de las notas por grupo sanguíneo**
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='GR_SANGUINEO', y='DEFINITIVA', data=df)
+plt.title('Distribución de Notas por Grupo Sanguíneo')
+plt.xlabel('Grupo Sanguíneo')
+plt.ylabel('Nota Definitiva')
+plt.grid(True)
+plt.show()
+
+# Calcular la media de las notas por grupo sanguíneo
+media_nota_grupo_sanguineo = df.groupby('GR_SANGUINEO')['DEFINITIVA'].mean()
+media_nota_grupo_sanguineo
+____________________________________________________
+
+# @title **Paso 31.  Calcular la media de las notas por curso**
+media_nota_curso = df.groupby('CURSO')['DEFINITIVA'].mean()
+# Calcular la diferencia entre las notas de los cursos
+diferencia_nota_curso = media_nota_curso.max() - media_nota_curso.min()
+
+# imprimir la media y la diferencia
+media_nota_curso, diferencia_nota_curso
+
+____________________________________________________
+
+____________________________________________________
+
